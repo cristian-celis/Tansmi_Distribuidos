@@ -21,11 +21,12 @@ app.post('/buses', (req, res) => {
     if (buses[normalizedPlate]) {
         buses[normalizedPlate].arrivalTime = arrivalTime;
         buses[normalizedPlate].edits += 1;
+        res.send(`Bus con placa ${normalizedPlate} actualizado a las ${arrivalTime}.`);
     } else {
         buses[normalizedPlate] = { arrivalTime, edits: 0 };
+        res.send(`Bus con placa ${normalizedPlate} registrado a las ${arrivalTime}.`);
     }
 
-    res.send(`Bus con placa ${normalizedPlate} registrado/actualizado a las ${arrivalTime}.`);
 });
 
 app.delete('/buses/:plate', (req, res) => {
