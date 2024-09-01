@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Buses de Transmilenio</title>
+</head>
+<body>
+    <h1>Registrar o Actualizar Bus</h1>
+    <form action="/buses" method="POST">
+        <label for="plate">Placa:</label>
+        <input type="text" name="plate" required><br>
+        <button type="submit">Registrar/Actualizar Bus</button>
+    </form>
+
+    <h1>Eliminar Bus</h1>
+    <form onsubmit="deleteBus(event)">
+        <label for="plate_delete">Placa:</label>
+        <input type="text" id="plate_delete" required>
+        <button type="submit">Eliminar Bus</button>
+    </form>
+
+    <h1>Buscar Bus</h1>
+    <form onsubmit="searchBus(event)">
+        <label for="plate_search">Placa:</label>
+        <input type="text" id="plate_search" required>
+        <button type="submit">Buscar Bus</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function deleteBus(event) {
+            event.preventDefault();
+            const plate = document.getElementById('plate_delete').value.toUpperCase();
+            fetch(`/buses/${plate}`, { method: 'DELETE' })
+                .then(response => response.text())
+                .then(data => document.getElementById('result').innerText = data)
+                .catch(error => console.error('Error:', error));
+        }
+
+        function searchBus(event) {
+            event.preventDefault();
+            const plate = document.getElementById('plate_search').value.toUpperCase();
+            fetch(`/buses/${plate}`)
+                .then(response => response.text())
+                .then(data => document.getElementById('result').innerText = data)
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
