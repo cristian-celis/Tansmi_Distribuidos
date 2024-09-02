@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="cliente.js"></script>
     <title>Registro de Buses de Transmilenio</title>
 </head>
 <body>
     <h1>Registrar o Actualizar Bus</h1>
-    <form action="/buses" method="POST">
+    <form onsubmit="registerBus(event)">
         <label for="plate">Placa:</label>
-        <input type="text" name="plate" required><br>
+        <input type="text" id="plate" required><br>
         <button type="submit">Registrar/Actualizar Bus</button>
     </form>
 
@@ -29,24 +30,5 @@
 
     <div id="result"></div>
 
-    <script>
-        function deleteBus(event) {
-            event.preventDefault();
-            const plate = document.getElementById('plate_delete').value.toUpperCase();
-            fetch(`/buses/${plate}`, { method: 'DELETE' })
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data)
-                .catch(error => console.error('Error:', error));
-        }
-
-        function searchBus(event) {
-            event.preventDefault();
-            const plate = document.getElementById('plate_search').value.toUpperCase();
-            fetch(`/buses/${plate}`)
-                .then(response => response.text())
-                .then(data => document.getElementById('result').innerText = data)
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
 </body>
 </html>

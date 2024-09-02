@@ -1,8 +1,9 @@
 const express = require('express');
-const path = require('path');
+var cors = require('cors')
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Para manejar datos del formulario
+const port = 3000
+app.use(cors())
+
 
 
 class BusManager {
@@ -10,7 +11,6 @@ class BusManager {
         this.buses = {};
     }
 
-    // Método para formatear la fecha y hora
     getFormattedDate() {
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
@@ -48,6 +48,7 @@ class BusManager {
         } else {
             return 'Bus no encontrado.';
         }
+        
     }
 
     
@@ -67,18 +68,12 @@ const busManager = new BusManager();
 
 // Servir el archivo HTML
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    console.log(req.params);
 });
 
 // Ruta para registrar o actualizar un bus
-app.post('/buses', (req, res) => {
-    const { plate } = req.body;
-
-    if (!plate) {
-        return res.status(400).send('La placa es requerida.');
-    }
-
-    const result = busManager.registerOrUpdateBus(plate);
+app.post('/buses/:plate', (req, res) => {
+    const result = busManager.registerOrUpdateBus(req.params.plate);
     res.send(result);
 });
 
@@ -94,6 +89,6 @@ app.get('/buses/:plate', (req, res) => {
     res.send(result);
 });
 
-app.listen(3000, () => {
-    console.log('Servidor corriendo en el puerto 3000');
-});
+app.listen(port, () => {
+    console.log(`Servidor corriendo en el puerto ${port}`);
+}); 
